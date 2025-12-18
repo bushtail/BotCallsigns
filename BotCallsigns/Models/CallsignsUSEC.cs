@@ -16325,6 +16325,7 @@ public static class CallsignsUSEC
         "Daniels",
         "yuiDEV",
         "smay",
-        "Kita"
+        "Kita",
+        "BoneBAD Bob"
     ];
 }

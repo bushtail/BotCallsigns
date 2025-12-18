@@ -16324,6 +16324,7 @@ public static class CallsignsBEAR
         "ABS-XIANYU-",
         "ABS-xiaoliu",
         "ABS-XiaoRuan",
-        "ABS-xiaozhou"
+        "ABS-xiaozhou",
+        "BoneBAD Bob"
     ];
 }

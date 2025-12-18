@@ -28,15 +28,6 @@ public class BotCallsigns(ISptLogger<BotCallsigns> logger, DatabaseService datab
         logger.Success($"[Bot Callsigns] Loaded {_userDefinedCallsigns.CallsignsBEAR.Length} BEAR callsigns and {_userDefinedCallsigns.CallsignsUSEC.Length} USEC callsigns from config.");
         var botTypes = databaseService.GetTables().Bots.Types;
         
-        logger.Info("[Bot Callsigns] Pushing USEC names to bot type...");
-        if (!botTypes.TryGetValue("usec", out var usecType) || usecType is null)
-        {
-            logger.Error("[Bot Callsigns] USEC bot type not found.");
-            throw new NullReferenceException(nameof(usecType));
-        }
-        PushNamesToBotType(usecType, CallsignsUSEC.Names, _userDefinedCallsigns.CallsignsUSEC);
-        logger.Success($"[Bot Callsigns] Pushed {CallsignsUSEC.Names.Length} names and {_userDefinedCallsigns.CallsignsUSEC.Length} user-defined names to USEC bot type.");
-        
         logger.Info("[Bot Callsigns] Pushing BEAR names to bot type...");
         if (!botTypes.TryGetValue("bear", out var bearType) || bearType is null)
         {
@@ -46,13 +37,23 @@ public class BotCallsigns(ISptLogger<BotCallsigns> logger, DatabaseService datab
         PushNamesToBotType(bearType, CallsignsBEAR.Names, _userDefinedCallsigns.CallsignsBEAR);
         logger.Success($"[Bot Callsigns] Pushed {CallsignsBEAR.Names.Length} names and {_userDefinedCallsigns.CallsignsBEAR.Length} user-defined names to BEAR bot type.");
         
+        logger.Info("[Bot Callsigns] Pushing USEC names to bot type...");
+        if (!botTypes.TryGetValue("usec", out var usecType) || usecType is null)
+        {
+            logger.Error("[Bot Callsigns] USEC bot type not found.");
+            throw new NullReferenceException(nameof(usecType));
+        }
+        PushNamesToBotType(usecType, CallsignsUSEC.Names, _userDefinedCallsigns.CallsignsUSEC);
+        logger.Success($"[Bot Callsigns] Pushed {CallsignsUSEC.Names.Length} names and {_userDefinedCallsigns.CallsignsUSEC.Length} user-defined names to USEC bot type.");
+        
+
         logger.Success("[Bot Callsigns] Signaling Twitch Players that this mod is ready, if it is installed...");
         
         
         return Task.CompletedTask;
     }
 
-    private void PushNamesToBotType(BotType botType, string[] constantNames, string[]? userDefinedNames)
+    private static void PushNamesToBotType(BotType botType, string[] constantNames, string[] userDefinedNames)
     {
         var firstNames = botType.FirstNames;
         foreach (var name in constantNames)
@@ -60,8 +61,6 @@ public class BotCallsigns(ISptLogger<BotCallsigns> logger, DatabaseService datab
             if (firstNames.Contains(name)) continue;
             firstNames.Add(name);
         }
-
-        if (userDefinedNames is null) return;
         
         foreach (var name in userDefinedNames)
         {

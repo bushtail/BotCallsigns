@@ -2,6 +2,6 @@
 
 public class UserDefinedCallsigns
 {
-    public string[] CallsignsUSEC { get; } = [];
-    public string[] CallsignsBEAR { get; } = [];
+    public string[] CallsignsUSEC { get; set; } = [];
+    public string[] CallsignsBEAR { get; set; } = [];
 }
